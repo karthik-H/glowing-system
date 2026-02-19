@@ -30,5 +30,13 @@
       }
     ],
     "missing_implementations": []
+  },
+  "task_9042375238_20240620143000": {
+    "implementation": [],
+    "missing_implementations": [
+      "Validation for the location field in task creation is missing. There is no logic restricting the location input to only 'ames' and 'boone'.",
+      "No location field exists in the TaskCreate or Task models.",
+      "No endpoint, service, or repository function checks for valid location values during task creation."
+    ]
   }
 }
