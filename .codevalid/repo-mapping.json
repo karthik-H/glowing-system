@@ -1,6 +1,34 @@
 {
   "task_1837402139_20240610120001": {
-    "implementation": [],
+    "implementation": [
+      {
+        "How_is_it_connected_to_implementation": "Defines the REST endpoint '/tasks' for adding a new task. Receives a TaskCreate object with all required fields and delegates creation to the service layer.",
+        "change_type": "new",
+        "file_path": "app/controllers/task_controller.py",
+        "id": "endpoint_add_task",
+        "name": "create_task",
+        "pseudo_code": "On POST /tasks with TaskCreate payload:\n    TRY\n        Call task_service.create_task(task)\n        RETURN created Task\n    EXCEPT Exception as e\n        Raise HTTP 400 with error message",
+        "type": "endpoint"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Implements business logic for creating a task. Logs the operation and passes the TaskCreate data to the repository.",
+        "change_type": "new",
+        "file_path": "app/services/task_service.py",
+        "id": "service_create_task",
+        "name": "TaskService.create_task",
+        "pseudo_code": "Function create_task(task_data):\n    Log 'Creating task for user: task_data.user_name'\n    RETURN repository.add_task(task_data)",
+        "type": "function"
+      },
+      {
+        "How_is_it_connected_to_implementation": "Handles persistence of the new task. Creates a Task object with all required fields, assigns a unique ID, stores it, and returns the Task.",
+        "change_type": "new",
+        "file_path": "app/repositories/task_repository.py",
+        "id": "repository_add_task",
+        "name": "TaskRepository.add_task",
+        "pseudo_code": "Function add_task(task_data):\n    Create Task with id = _id_counter and fields from task_data\n    Append Task to _tasks list\n    Increment _id_counter\n    Log 'Task created: task'\n    RETURN Task",
+        "type": "function"
+      }
+    ],
     "missing_implementations": []
   }
 }
