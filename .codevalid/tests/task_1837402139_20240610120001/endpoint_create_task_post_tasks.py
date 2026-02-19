@@ -1,285 +1,270 @@
 import pytest
 from fastapi.testclient import TestClient
 from app.main import app
-from app.domain.models.task import TaskCreate, Task
-from unittest.mock import patch, MagicMock
+from app.domain.models.task import Task
+from unittest.mock import patch
 
 client = TestClient(app)
-
-# Helper to generate a Task response with auto-generated id
-def make_task_response(body):
-    resp = body.copy()
-    resp['id'] = 'auto_generated_id'
-    return resp
 
 @pytest.fixture(autouse=True)
 def clear_tasks():
     # In real tests, clear DB or mock repository here
     pass
 
-# Test Case 1: Create task with all valid fields
-def test_create_task_with_all_valid_fields():
+# Test Case 1: create_task_with_all_fields_location_ames
+def test_create_task_with_all_fields_location_ames():
     payload = {
-        'description': 'Complete the draft and send for review',
-        'due_date': '2024-07-01',
-        'priority': 3,
-        'tag': 'work',
-        'title': 'Finish project report',
+        'description': 'Purchase milk, eggs, and bread',
+        'due_date': '2024-07-01T12:00:00Z',
+        'location': 'ames',
+        'priority': 'high',
+        'title': 'Buy groceries',
+        'user_name': 'john_doe'
+    }
+    expected = payload.copy()
+    with patch('app.services.task_service.TaskService.create_task', return_value=Task(**expected)):
+        response = client.post('/tasks', json=payload)
+    assert response.status_code == 201
+    assert response.json() == expected
+
+# Test Case 2: create_task_with_all_fields_location_boone
+def test_create_task_with_all_fields_location_boone():
+    payload = {
+        'description': 'Complete the API test cases',
+        'due_date': '2024-06-30',
+        'location': 'boone',
+        'priority': 2,
+        'title': 'Finish assignment',
         'user_name': 'alice'
     }
-    expected = make_task_response(payload)
+    expected = payload.copy()
     with patch('app.services.task_service.TaskService.create_task', return_value=Task(**expected)):
         response = client.post('/tasks', json=payload)
     assert response.status_code == 201
-    resp_json = response.json()
-    assert resp_json == expected
+    assert response.json() == expected
 
-# Test Case 2: Create task with minimal required fields
-def test_create_task_with_minimal_required_fields():
+# Test Case 3: create_task_with_invalid_location
+def test_create_task_with_invalid_location():
     payload = {
-        'description': '',
-        'due_date': '2024-06-15',
-        'priority': 1,
-        'tag': '',
-        'title': 'Buy groceries',
+        'description': 'Reminder to call mom',
+        'due_date': '2024-07-03',
+        'location': 'desmoines',
+        'priority': 'medium',
+        'title': 'Call mom',
         'user_name': 'bob'
     }
-    expected = make_task_response(payload)
-    with patch('app.services.task_service.TaskService.create_task', return_value=Task(**expected)):
-        response = client.post('/tasks', json=payload)
-    assert response.status_code == 201
-    assert response.json() == expected
-
-# Test Case 3: Create task with missing title
-def test_create_task_with_missing_title():
-    payload = {
-        'description': 'No title provided',
-        'due_date': '2024-06-20',
-        'priority': 2,
-        'tag': 'personal',
-        'user_name': 'charlie'
-    }
-    with patch('app.services.task_service.TaskService.create_task', side_effect=Exception("'title' is a required field")):
+    with patch('app.services.task_service.TaskService.create_task', side_effect=Exception("Invalid location: must be 'ames' or 'boone'.")):
         response = client.post('/tasks', json=payload)
     assert response.status_code == 400
-    assert response.json() == {'detail': "'title' is a required field"}
+    assert response.json() == {'error': "Invalid location: must be 'ames' or 'boone'."}
 
-# Test Case 4: Create task with empty string title
-def test_create_task_with_empty_string_title():
+# Test Case 4: create_task_missing_title
+def test_create_task_missing_title():
     payload = {
-        'description': 'Empty title test',
-        'due_date': '2024-06-20',
-        'priority': 2,
-        'tag': 'errand',
-        'title': '',
-        'user_name': 'dave'
-    }
-    with patch('app.services.task_service.TaskService.create_task', side_effect=Exception("'title' must not be empty")):
-        response = client.post('/tasks', json=payload)
-    assert response.status_code == 400
-    assert response.json() == {'detail': "'title' must not be empty"}
-
-# Test Case 5: Create task with priority as string
-def test_create_task_with_priority_as_string():
-    payload = {
-        'description': 'Call on Sunday',
-        'due_date': '2024-06-16',
-        'priority': 'high',
-        'tag': 'family',
-        'title': 'Call mom',
-        'user_name': 'eve'
-    }
-    with patch('app.services.task_service.TaskService.create_task', side_effect=Exception("'priority' must be an integer")):
-        response = client.post('/tasks', json=payload)
-    assert response.status_code == 400
-    assert response.json() == {'detail': "'priority' must be an integer"}
-
-# Test Case 6: Create task with priority below allowed minimum
-def test_create_task_with_priority_below_minimum():
-    payload = {
-        'description': 'Priority too low',
-        'due_date': '2024-06-18',
-        'priority': 0,
-        'tag': 'test',
-        'title': 'Test minimum priority',
-        'user_name': 'frank'
-    }
-    with patch('app.services.task_service.TaskService.create_task', side_effect=Exception("'priority' must be between 1 and 5")):
-        response = client.post('/tasks', json=payload)
-    assert response.status_code == 400
-    assert response.json() == {'detail': "'priority' must be between 1 and 5"}
-
-# Test Case 7: Create task with priority above allowed maximum
-def test_create_task_with_priority_above_maximum():
-    payload = {
-        'description': 'Priority too high',
-        'due_date': '2024-06-18',
-        'priority': 6,
-        'tag': 'test',
-        'title': 'Test maximum priority',
-        'user_name': 'grace'
-    }
-    with patch('app.services.task_service.TaskService.create_task', side_effect=Exception("'priority' must be between 1 and 5")):
-        response = client.post('/tasks', json=payload)
-    assert response.status_code == 400
-    assert response.json() == {'detail': "'priority' must be between 1 and 5"}
-
-# Test Case 8: Create task with invalid due_date format
-def test_create_task_with_invalid_due_date_format():
-    payload = {
-        'description': 'Wrong date format',
-        'due_date': '18-06-2024',
-        'priority': 3,
-        'tag': 'test',
-        'title': 'Test invalid due date',
-        'user_name': 'hannah'
-    }
-    with patch('app.services.task_service.TaskService.create_task', side_effect=Exception("'due_date' must be in 'YYYY-MM-DD' format")):
-        response = client.post('/tasks', json=payload)
-    assert response.status_code == 400
-    assert response.json() == {'detail': "'due_date' must be in 'YYYY-MM-DD' format"}
-
-# Test Case 9: Create task with past due_date
-def test_create_task_with_past_due_date():
-    payload = {
-        'description': 'Due date has already passed',
-        'due_date': '2020-01-01',
-        'priority': 2,
-        'tag': 'test',
-        'title': 'Test past due date',
-        'user_name': 'ian'
-    }
-    with patch('app.services.task_service.TaskService.create_task', side_effect=Exception("'due_date' cannot be in the past")):
-        response = client.post('/tasks', json=payload)
-    assert response.status_code == 400
-    assert response.json() == {'detail': "'due_date' cannot be in the past"}
-
-# Test Case 10: Create task with maximum allowed title length
-def test_create_task_with_maximum_allowed_title_length():
-    title = 'T' * 255
-    payload = {
-        'description': 'Max length title test',
-        'due_date': '2024-06-30',
-        'priority': 4,
-        'tag': 'long',
-        'title': title,
+        'description': 'No title here',
+        'due_date': '2024-08-01',
+        'location': 'ames',
+        'priority': 'low',
         'user_name': 'jane'
     }
-    expected = make_task_response(payload)
-    with patch('app.services.task_service.TaskService.create_task', return_value=Task(**expected)):
-        response = client.post('/tasks', json=payload)
-    assert response.status_code == 201
-    assert response.json() == expected
-
-# Test Case 11: Create task with title exceeding maximum length
-def test_create_task_with_title_exceeding_maximum_length():
-    title = 'T' * 256
-    payload = {
-        'description': 'Title too long',
-        'due_date': '2024-06-25',
-        'priority': 2,
-        'tag': 'error',
-        'title': title,
-        'user_name': 'kate'
-    }
-    with patch('app.services.task_service.TaskService.create_task', side_effect=Exception("'title' length must not exceed 255 characters")):
+    with patch('app.services.task_service.TaskService.create_task', side_effect=Exception('Missing required field: title')):
         response = client.post('/tasks', json=payload)
     assert response.status_code == 400
-    assert response.json() == {'detail': "'title' length must not exceed 255 characters"}
+    assert response.json() == {'error': 'Missing required field: title'}
 
-# Test Case 12: Create task with missing body
-def test_create_task_with_missing_body():
-    payload = {}
-    with patch('app.services.task_service.TaskService.create_task', side_effect=Exception('Request body is required')):
-        response = client.post('/tasks', json=payload)
-    assert response.status_code == 400
-    assert response.json() == {'detail': 'Request body is required'}
-
-# Test Case 13: Create task with extra, unexpected field
-def test_create_task_with_extra_unexpected_field():
+# Test Case 5: create_task_missing_description
+def test_create_task_missing_description():
     payload = {
-        'description': 'Read a new novel',
-        'due_date': '2024-06-22',
-        'priority': 2,
-        'tag': 'leisure',
+        'due_date': '2024-07-10',
+        'location': 'boone',
+        'priority': 'medium',
         'title': 'Read book',
-        'unexpected_field': 'unexpected_value',
-        'user_name': 'leo'
+        'user_name': 'emma'
     }
-    with patch('app.services.task_service.TaskService.create_task', side_effect=Exception("Unexpected field 'unexpected_field' in request")):
+    with patch('app.services.task_service.TaskService.create_task', side_effect=Exception('Missing required field: description')):
         response = client.post('/tasks', json=payload)
     assert response.status_code == 400
-    assert response.json() == {'detail': "Unexpected field 'unexpected_field' in request"}
+    assert response.json() == {'error': 'Missing required field: description'}
 
-# Test Case 14: Create task without authentication
-def test_create_task_without_authentication():
+# Test Case 6: create_task_missing_priority
+def test_create_task_missing_priority():
     payload = {
-        'description': 'Testing without auth headers',
-        'due_date': '2024-06-23',
-        'priority': 1,
-        'tag': 'test',
-        'title': 'No auth test',
-        'user_name': 'mike'
+        'description': 'Evening walk',
+        'due_date': '2024-07-05',
+        'location': 'ames',
+        'title': 'Walk dog',
+        'user_name': 'lisa'
     }
-    expected = make_task_response(payload)
+    with patch('app.services.task_service.TaskService.create_task', side_effect=Exception('Missing required field: priority')):
+        response = client.post('/tasks', json=payload)
+    assert response.status_code == 400
+    assert response.json() == {'error': 'Missing required field: priority'}
+
+# Test Case 7: create_task_missing_due_date
+def test_create_task_missing_due_date():
+    payload = {
+        'description': 'Feed the cat before work',
+        'location': 'boone',
+        'priority': 'high',
+        'title': 'Feed cat',
+        'user_name': 'maria'
+    }
+    with patch('app.services.task_service.TaskService.create_task', side_effect=Exception('Missing required field: due_date')):
+        response = client.post('/tasks', json=payload)
+    assert response.status_code == 400
+    assert response.json() == {'error': 'Missing required field: due_date'}
+
+# Test Case 8: create_task_missing_user_name
+def test_create_task_missing_user_name():
+    payload = {
+        'description': 'Tidy up bedroom',
+        'due_date': '2024-07-09',
+        'location': 'ames',
+        'priority': 'low',
+        'title': 'Clean room'
+    }
+    with patch('app.services.task_service.TaskService.create_task', side_effect=Exception('Missing required field: user_name')):
+        response = client.post('/tasks', json=payload)
+    assert response.status_code == 400
+    assert response.json() == {'error': 'Missing required field: user_name'}
+
+# Test Case 9: create_task_missing_location
+def test_create_task_missing_location():
+    payload = {
+        'description': 'Electricity and water',
+        'due_date': '2024-07-02',
+        'priority': 'high',
+        'title': 'Pay bills',
+        'user_name': 'steve'
+    }
+    with patch('app.services.task_service.TaskService.create_task', side_effect=Exception('Missing required field: location')):
+        response = client.post('/tasks', json=payload)
+    assert response.status_code == 400
+    assert response.json() == {'error': 'Missing required field: location'}
+
+# Test Case 10: create_task_with_empty_title
+def test_create_task_with_empty_title():
+    payload = {
+        'description': 'Empty title test',
+        'due_date': '2024-07-15',
+        'location': 'boone',
+        'priority': 'low',
+        'title': '',
+        'user_name': 'testuser'
+    }
+    with patch('app.services.task_service.TaskService.create_task', side_effect=Exception('Title cannot be empty.')):
+        response = client.post('/tasks', json=payload)
+    assert response.status_code == 400
+    assert response.json() == {'error': 'Title cannot be empty.'}
+
+# Test Case 11: create_task_priority_as_string_number
+def test_create_task_priority_as_string_number():
+    payload = {
+        'description': 'Priority as string number',
+        'due_date': '2024-07-12',
+        'location': 'ames',
+        'priority': '1',
+        'title': 'Test priority',
+        'user_name': 'bob'
+    }
+    expected = payload.copy()
     with patch('app.services.task_service.TaskService.create_task', return_value=Task(**expected)):
         response = client.post('/tasks', json=payload)
     assert response.status_code == 201
     assert response.json() == expected
 
-# Test Case 15: Create task with HTML/script in description
-def test_create_task_with_html_script_in_description():
+# Test Case 12: create_task_priority_as_integer
+def test_create_task_priority_as_integer():
     payload = {
-        'description': "<script>alert('x')</script>",
-        'due_date': '2024-06-24',
+        'description': 'Priority as integer',
+        'due_date': '2024-07-14',
+        'location': 'boone',
         'priority': 3,
-        'tag': 'security',
-        'title': 'HTML injection test',
-        'user_name': 'nancy'
+        'title': 'Integer priority',
+        'user_name': 'carol'
     }
-    expected = make_task_response(payload)
+    expected = payload.copy()
     with patch('app.services.task_service.TaskService.create_task', return_value=Task(**expected)):
         response = client.post('/tasks', json=payload)
     assert response.status_code == 201
     assert response.json() == expected
 
-# Test Case 16: Create task with null fields
-def test_create_task_with_null_fields():
+# Test Case 13: create_task_due_date_iso8601
+def test_create_task_due_date_iso8601():
     payload = {
-        'description': None,
-        'due_date': None,
-        'priority': None,
-        'tag': None,
-        'title': None,
-        'user_name': None
+        'description': 'Due date as ISO 8601 string',
+        'due_date': '2024-07-20T16:00:00Z',
+        'location': 'ames',
+        'priority': 'medium',
+        'title': 'ISO due date',
+        'user_name': 'dan'
     }
-    with patch('app.services.task_service.TaskService.create_task', side_effect=Exception("Fields 'title', 'priority', 'due_date', and 'user_name' cannot be null")):
+    expected = payload.copy()
+    with patch('app.services.task_service.TaskService.create_task', return_value=Task(**expected)):
+        response = client.post('/tasks', json=payload)
+    assert response.status_code == 201
+    assert response.json() == expected
+
+# Test Case 14: create_task_due_date_invalid_format
+def test_create_task_due_date_invalid_format():
+    payload = {
+        'description': 'Invalid due date format',
+        'due_date': '07/30/2024',
+        'location': 'boone',
+        'priority': 'high',
+        'title': 'Bad due date',
+        'user_name': 'eve'
+    }
+    with patch('app.services.task_service.TaskService.create_task', side_effect=Exception('Invalid due_date format. Use ISO 8601.')):
         response = client.post('/tasks', json=payload)
     assert response.status_code == 400
-    assert response.json() == {'detail': "Fields 'title', 'priority', 'due_date', and 'user_name' cannot be null"}
+    assert response.json() == {'error': 'Invalid due_date format. Use ISO 8601.'}
 
-# Test Case 17: Create task with only optional fields
-def test_create_task_with_only_optional_fields():
+# Test Case 15: create_task_location_case_sensitivity
+def test_create_task_location_case_sensitivity():
     payload = {
-        'description': 'No required fields',
-        'tag': 'optional'
+        'description': 'Test location case sensitivity',
+        'due_date': '2024-07-18',
+        'location': 'Ames',
+        'priority': 'low',
+        'title': 'Case test',
+        'user_name': 'frank'
     }
-    with patch('app.services.task_service.TaskService.create_task', side_effect=Exception('Missing required fields: title, priority, due_date, user_name')):
+    with patch('app.services.task_service.TaskService.create_task', side_effect=Exception("Invalid location: must be 'ames' or 'boone'.")):
         response = client.post('/tasks', json=payload)
     assert response.status_code == 400
-    assert response.json() == {'detail': 'Missing required fields: title, priority, due_date, user_name'}
+    assert response.json() == {'error': "Invalid location: must be 'ames' or 'boone'."}
 
-# Test Case 18: Create task with special characters in tag
-def test_create_task_with_special_characters_in_tag():
+# Test Case 16: create_task_with_additional_field
+def test_create_task_with_additional_field():
     payload = {
-        'description': 'Test special characters in tag',
-        'due_date': '2024-06-28',
-        'priority': 2,
-        'tag': '@urgent#now!',
-        'title': 'Special tag test',
-        'user_name': 'oliver'
+        'description': 'Extra field should be ignored',
+        'due_date': '2024-07-19',
+        'extraField': 'shouldBeIgnored',
+        'location': 'ames',
+        'priority': 'medium',
+        'title': 'With extra',
+        'user_name': 'harry'
     }
-    expected = make_task_response(payload)
+    expected = payload.copy()
+    expected.pop('extraField')
+    with patch('app.services.task_service.TaskService.create_task', return_value=Task(**expected)):
+        response = client.post('/tasks', json=payload)
+    assert response.status_code == 201
+    assert response.json() == expected
+
+# Test Case 17: create_task_with_large_title
+def test_create_task_with_large_title():
+    title = 'T' * 255
+    payload = {
+        'description': 'Long title string of 255 chars',
+        'due_date': '2024-07-25',
+        'location': 'boone',
+        'priority': 'high',
+        'title': title,
+        'user_name': 'longtitleuser'
+    }
+    expected = payload.copy()
     with patch('app.services.task_service.TaskService.create_task', return_value=Task(**expected)):
         response = client.post('/tasks', json=payload)
     assert response.status_code == 201
