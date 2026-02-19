@@ -9,5 +9,4 @@ Python program with REST endpoint
   - Description
   - Priority
   - Due date
-  - User_name
-  - location, location should be either ames and boone.     
+  - User_name  
