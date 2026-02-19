@@ -40,32 +40,7 @@
     ]
   },
   "task_2384751029_20240609235900": {
-    "implementation": [
-      {
-        "How_is_it_connected_to_implementation": "Defines the REST POST endpoint '/tasks' that receives a TaskCreate object and invokes the service to add a new task.",
-        "file_path": "app/controllers/task_controller.py",
-        "id": "endpoint_create_task_post_tasks",
-        "name": "create_task",
-        "pseudo_code": "When a POST request is made to '/tasks' with task data:\n    TRY\n        Call task_service.create_task(task)\n        Return the created task\n    EXCEPT Exception\n        Raise HTTPException",
-        "type": "endpoint"
-      },
-      {
-        "How_is_it_connected_to_implementation": "Implements business logic for creating a task. Receives TaskCreate, logs the operation, and delegates to the repository.",
-        "file_path": "app/services/task_service.py",
-        "id": "service_taskservice_create_task",
-        "name": "TaskService.create_task",
-        "pseudo_code": "Log 'Creating task for user: {user_name}'\nCall repository.add_task(task_data)\nReturn the created task",
-        "type": "function"
-      },
-      {
-        "How_is_it_connected_to_implementation": "Handles persistence of the new task. Creates a Task object with all required fields, assigns an ID, stores it, and returns it.",
-        "file_path": "app/repositories/task_repository.py",
-        "id": "repository_taskrepository_add_task",
-        "name": "TaskRepository.add_task",
-        "pseudo_code": "Create Task object with:\n    id = current id counter\n    title, description, priority, due_date, user_name from task_data\nAppend Task to internal list\nIncrement id counter\nLog 'Task created: {task}'\nReturn Task",
-        "type": "function"
-      }
-    ],
+    "implementation": [],
     "missing_implementations": []
   }
 }
