@@ -2,7 +2,7 @@
   "task_1837402139_20240610120001": {
     "implementation": [
       {
-        "How_is_it_connected_to_implementation": "Defines the REST endpoint '/tasks' for adding a new task. Receives a TaskCreate object with all required fields and delegates creation to the service layer.",
+        "How_is_it_connected_to_implementation": "Defines the REST endpoint '/tasks' for adding a new task. Receives a TaskCreate object with all required fields (title, description, priority, due_date, user_name) and delegates creation to the service layer.",
         "change_type": "unchanged",
         "file_path": "app/controllers/task_controller.py",
         "id": "endpoint_add_task",
@@ -11,7 +11,7 @@
         "type": "endpoint"
       },
       {
-        "How_is_it_connected_to_implementation": "Implements business logic for creating a task. Logs the operation and passes the TaskCreate data to the repository.",
+        "How_is_it_connected_to_implementation": "Implements business logic for creating a task. Logs the operation and passes the TaskCreate data (including all required fields) to the repository.",
         "change_type": "unchanged",
         "file_path": "app/services/task_service.py",
         "id": "service_create_task",
