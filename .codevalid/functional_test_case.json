@@ -827,190 +827,202 @@
       "implementation_id": "service_create_task",
       "test_cases": [
         {
-          "description": "Verify that a task is successfully created when all required fields are provided with valid values.",
-          "id": "tc_create_task_all_fields_valid",
+          "description": "Verify that a task is successfully created when all required fields are present in the request.",
+          "id": "TC_POS_01_create_task_all_fields_present",
           "implementation_id": "service_create_task",
-          "name": "test_create_task_with_all_required_fields",
+          "name": "create_task_with_all_required_fields",
           "test_setup": {
             "given": {
               "request_body_json": {
-                "description": "Write all REST endpoint specifications",
-                "due_date": "2024-07-30",
-                "priority": "high",
-                "title": "Complete API documentation",
+                "description": "Complete all modules",
+                "due_date": "2024-07-01",
+                "priority": "High",
+                "title": "Finish project",
                 "user_name": "alice"
               }
             },
             "then": {
               "response_body_json": {
-                "success": true,
+                "status": "success",
                 "task": {
-                  "description": "Write all REST endpoint specifications",
-                  "due_date": "2024-07-30",
-                  "id": "auto_generated_id",
-                  "priority": "high",
-                  "title": "Complete API documentation",
+                  "description": "Complete all modules",
+                  "due_date": "2024-07-01",
+                  "priority": "High",
+                  "title": "Finish project",
                   "user_name": "alice"
                 }
-              },
-              "status_code": 201
+              }
             },
-            "when": "TaskService.create_task is called with the above data"
+            "when": "TaskService.create_task is called with the above input"
           },
           "type": "positive"
         },
         {
-          "description": "Verify that an error is returned when the 'title' field is missing from the request.",
-          "id": "tc_create_task_missing_title",
+          "description": "Verify that creating a task without the 'title' field returns an error specifying the missing field.",
+          "id": "TC_NEG_01_missing_title",
           "implementation_id": "service_create_task",
-          "name": "test_create_task_missing_title",
+          "name": "create_task_missing_title",
           "test_setup": {
             "given": {
               "request_body_json": {
-                "description": "Write all REST endpoint specifications",
-                "due_date": "2024-07-30",
-                "priority": "high",
-                "user_name": "alice"
+                "description": "Complete documentation",
+                "due_date": "2024-07-02",
+                "priority": "Medium",
+                "user_name": "bob"
               }
             },
             "then": {
               "response_body_json": {
-                "error": "Missing required field: title",
-                "success": false
-              },
-              "status_code": 400
+                "error": "Missing required field(s): title",
+                "status": "error"
+              }
             },
-            "when": "TaskService.create_task is called with the above data"
+            "when": "TaskService.create_task is called with missing 'title'"
           },
           "type": "negative"
         },
         {
-          "description": "Verify that an error is returned when the 'description' field is missing.",
-          "id": "tc_create_task_missing_description",
+          "description": "Verify that creating a task without the 'description' field returns an error specifying the missing field.",
+          "id": "TC_NEG_02_missing_description",
           "implementation_id": "service_create_task",
-          "name": "test_create_task_missing_description",
+          "name": "create_task_missing_description",
           "test_setup": {
             "given": {
               "request_body_json": {
-                "due_date": "2024-07-30",
-                "priority": "high",
-                "title": "Complete API documentation",
-                "user_name": "alice"
+                "due_date": "2024-07-03",
+                "priority": "Low",
+                "title": "Write tests",
+                "user_name": "charlie"
               }
             },
             "then": {
               "response_body_json": {
-                "error": "Missing required field: description",
-                "success": false
-              },
-              "status_code": 400
+                "error": "Missing required field(s): description",
+                "status": "error"
+              }
             },
-            "when": "TaskService.create_task is called with the above data"
+            "when": "TaskService.create_task is called with missing 'description'"
           },
           "type": "negative"
         },
         {
-          "description": "Verify that an error is returned when the 'priority' field is missing.",
-          "id": "tc_create_task_missing_priority",
+          "description": "Verify that creating a task without the 'priority' field returns an error specifying the missing field.",
+          "id": "TC_NEG_03_missing_priority",
           "implementation_id": "service_create_task",
-          "name": "test_create_task_missing_priority",
+          "name": "create_task_missing_priority",
           "test_setup": {
             "given": {
               "request_body_json": {
-                "description": "Write all REST endpoint specifications",
-                "due_date": "2024-07-30",
-                "title": "Complete API documentation",
-                "user_name": "alice"
+                "description": "Deploy to production",
+                "due_date": "2024-07-04",
+                "title": "Deploy app",
+                "user_name": "dave"
               }
             },
             "then": {
               "response_body_json": {
-                "error": "Missing required field: priority",
-                "success": false
-              },
-              "status_code": 400
+                "error": "Missing required field(s): priority",
+                "status": "error"
+              }
             },
-            "when": "TaskService.create_task is called with the above data"
+            "when": "TaskService.create_task is called with missing 'priority'"
           },
           "type": "negative"
         },
         {
-          "description": "Verify that an error is returned when the 'due_date' field is missing.",
-          "id": "tc_create_task_missing_due_date",
+          "description": "Verify that creating a task without the 'due_date' field returns an error specifying the missing field.",
+          "id": "TC_NEG_04_missing_due_date",
           "implementation_id": "service_create_task",
-          "name": "test_create_task_missing_due_date",
+          "name": "create_task_missing_due_date",
           "test_setup": {
             "given": {
               "request_body_json": {
-                "description": "Write all REST endpoint specifications",
-                "priority": "high",
-                "title": "Complete API documentation",
-                "user_name": "alice"
+                "description": "Update API documentation",
+                "priority": "High",
+                "title": "Update docs",
+                "user_name": "eve"
               }
             },
             "then": {
               "response_body_json": {
-                "error": "Missing required field: due_date",
-                "success": false
-              },
-              "status_code": 400
+                "error": "Missing required field(s): due_date",
+                "status": "error"
+              }
             },
-            "when": "TaskService.create_task is called with the above data"
+            "when": "TaskService.create_task is called with missing 'due_date'"
           },
           "type": "negative"
         },
         {
-          "description": "Verify that an error is returned when the 'user_name' field is missing.",
-          "id": "tc_create_task_missing_user_name",
+          "description": "Verify that creating a task without the 'user_name' field returns an error specifying the missing field.",
+          "id": "TC_NEG_05_missing_user_name",
           "implementation_id": "service_create_task",
-          "name": "test_create_task_missing_user_name",
+          "name": "create_task_missing_user_name",
           "test_setup": {
             "given": {
               "request_body_json": {
-                "description": "Write all REST endpoint specifications",
-                "due_date": "2024-07-30",
-                "priority": "high",
-                "title": "Complete API documentation"
+                "description": "Peer code review",
+                "due_date": "2024-07-05",
+                "priority": "Medium",
+                "title": "Review code"
               }
             },
             "then": {
               "response_body_json": {
-                "error": "Missing required field: user_name",
-                "success": false
-              },
-              "status_code": 400
+                "error": "Missing required field(s): user_name",
+                "status": "error"
+              }
             },
-            "when": "TaskService.create_task is called with the above data"
+            "when": "TaskService.create_task is called with missing 'user_name'"
           },
           "type": "negative"
         },
         {
-          "description": "Verify that an error is returned listing all missing required fields when several are omitted.",
-          "id": "tc_create_task_multiple_missing_fields",
+          "description": "Verify that creating a task with multiple missing required fields returns an error listing all missing fields.",
+          "id": "TC_NEG_06_multiple_fields_missing",
           "implementation_id": "service_create_task",
-          "name": "test_create_task_multiple_missing_fields",
+          "name": "create_task_multiple_fields_missing",
           "test_setup": {
             "given": {
               "request_body_json": {
-                "priority": "high"
+                "priority": "Low",
+                "title": "Submit report"
               }
             },
             "then": {
               "response_body_json": {
-                "error": "Missing required fields: title, description, due_date, user_name",
-                "success": false
-              },
-              "status_code": 400
+                "error": "Missing required field(s): description, due_date, user_name",
+                "status": "error"
+              }
             },
-            "when": "TaskService.create_task is called with the above data"
+            "when": "TaskService.create_task is called with missing 'description', 'due_date', and 'user_name'"
           },
           "type": "negative"
         },
         {
-          "description": "Verify that an error is returned when required fields are present but contain empty strings.",
-          "id": "tc_create_task_empty_field_values",
+          "description": "Verify that creating a task with no fields returns an error listing all required fields.",
+          "id": "TC_NEG_07_all_fields_missing",
           "implementation_id": "service_create_task",
-          "name": "test_create_task_with_empty_field_values",
+          "name": "create_task_all_fields_missing",
+          "test_setup": {
+            "given": {
+              "request_body_json": {}
+            },
+            "then": {
+              "response_body_json": {
+                "error": "Missing required field(s): title, description, priority, due_date, user_name",
+                "status": "error"
+              }
+            },
+            "when": "TaskService.create_task is called with an empty request"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Verify that empty string values for required fields are accepted and task is created (since no value validation is required).",
+          "id": "TC_EDGE_01_empty_string_fields",
+          "implementation_id": "service_create_task",
+          "name": "create_task_empty_string_fields",
           "test_setup": {
             "given": {
               "request_body_json": {
@@ -1023,233 +1035,100 @@
             },
             "then": {
               "response_body_json": {
-                "error": "Empty values for required field(s): title, description, priority, due_date, user_name",
-                "success": false
-              },
-              "status_code": 400
-            },
-            "when": "TaskService.create_task is called with the above data"
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Verify that an error is returned when 'due_date' is not in the expected date format.",
-          "id": "tc_create_task_invalid_due_date_format",
-          "implementation_id": "service_create_task",
-          "name": "test_create_task_with_invalid_due_date_format",
-          "test_setup": {
-            "given": {
-              "request_body_json": {
-                "description": "Write all REST endpoint specifications",
-                "due_date": "30-07-2024",
-                "priority": "high",
-                "title": "Complete API documentation",
-                "user_name": "alice"
-              }
-            },
-            "then": {
-              "response_body_json": {
-                "error": "Invalid date format for due_date. Expected YYYY-MM-DD.",
-                "success": false
-              },
-              "status_code": 400
-            },
-            "when": "TaskService.create_task is called with the above data"
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Verify that the system can handle a very long title at the boundary of the allowed limit.",
-          "id": "tc_create_task_long_title",
-          "implementation_id": "service_create_task",
-          "name": "test_create_task_with_very_long_title",
-          "test_setup": {
-            "given": {
-              "request_body_json": {
-                "description": "Boundary test for title length",
-                "due_date": "2024-12-31",
-                "priority": "low",
-                "title": "T.repeat(255)",
-                "user_name": "bob"
-              }
-            },
-            "then": {
-              "response_body_json": {
-                "success": true,
+                "status": "success",
                 "task": {
-                  "description": "Boundary test for title length",
-                  "due_date": "2024-12-31",
-                  "id": "auto_generated_id",
-                  "priority": "low",
-                  "title": "T.repeat(255)",
-                  "user_name": "bob"
+                  "description": "",
+                  "due_date": "",
+                  "priority": "",
+                  "title": "",
+                  "user_name": ""
                 }
-              },
-              "status_code": 201
+              }
             },
-            "when": "TaskService.create_task is called with the above data"
+            "when": "TaskService.create_task is called with all fields present but empty"
           },
           "type": "edge"
         },
         {
-          "description": "Verify that the system accepts all allowed priority values (e.g., low, medium, high) and rejects invalid ones.",
-          "id": "tc_create_task_priority_values",
+          "description": "Verify that extra fields in the request are ignored and task is created with only the required fields.",
+          "id": "TC_EDGE_02_extra_fields_present",
           "implementation_id": "service_create_task",
-          "name": "test_create_task_with_various_priority_values",
-          "test_setup": {
-            "given": [
-              {
-                "request_body_json": {
-                  "description": "Test low priority",
-                  "due_date": "2024-08-01",
-                  "priority": "low",
-                  "title": "Low priority task",
-                  "user_name": "carol"
-                }
-              },
-              {
-                "request_body_json": {
-                  "description": "Test medium priority",
-                  "due_date": "2024-08-02",
-                  "priority": "medium",
-                  "title": "Medium priority task",
-                  "user_name": "carol"
-                }
-              },
-              {
-                "request_body_json": {
-                  "description": "Test invalid priority",
-                  "due_date": "2024-08-03",
-                  "priority": "urgent",
-                  "title": "Invalid priority task",
-                  "user_name": "carol"
-                }
-              }
-            ],
-            "then": [
-              {
-                "response_body_json": {
-                  "success": true,
-                  "task": {
-                    "description": "Test low priority",
-                    "due_date": "2024-08-01",
-                    "id": "auto_generated_id",
-                    "priority": "low",
-                    "title": "Low priority task",
-                    "user_name": "carol"
-                  }
-                },
-                "status_code": 201
-              },
-              {
-                "response_body_json": {
-                  "success": true,
-                  "task": {
-                    "description": "Test medium priority",
-                    "due_date": "2024-08-02",
-                    "id": "auto_generated_id",
-                    "priority": "medium",
-                    "title": "Medium priority task",
-                    "user_name": "carol"
-                  }
-                },
-                "status_code": 201
-              },
-              {
-                "response_body_json": {
-                  "error": "Invalid value for priority. Allowed values: low, medium, high.",
-                  "success": false
-                },
-                "status_code": 400
-              }
-            ],
-            "when": "TaskService.create_task is called with each input"
-          },
-          "type": "edge"
-        },
-        {
-          "description": "Verify that an error is returned if the due_date is set in the past.",
-          "id": "tc_create_task_due_date_past",
-          "implementation_id": "service_create_task",
-          "name": "test_create_task_due_date_in_the_past",
+          "name": "create_task_extra_fields_present",
           "test_setup": {
             "given": {
               "request_body_json": {
-                "description": "This task's due date is in the past",
-                "due_date": "2022-01-01",
-                "priority": "medium",
-                "title": "Past due date task",
-                "user_name": "eve"
+                "description": "Test extra fields",
+                "due_date": "2024-07-10",
+                "extra_field_1": "should be ignored",
+                "extra_field_2": 123,
+                "priority": "Medium",
+                "title": "Extra fields",
+                "user_name": "extra_user"
               }
             },
             "then": {
               "response_body_json": {
-                "error": "Due date cannot be in the past.",
-                "success": false
-              },
-              "status_code": 400
-            },
-            "when": "TaskService.create_task is called with the above data"
-          },
-          "type": "edge"
-        },
-        {
-          "description": "Verify that extra fields in the request are ignored and do not affect task creation.",
-          "id": "tc_create_task_extra_fields_ignored",
-          "implementation_id": "service_create_task",
-          "name": "test_create_task_with_extra_fields",
-          "test_setup": {
-            "given": {
-              "request_body_json": {
-                "description": "Extra field should be ignored",
-                "due_date": "2024-08-15",
-                "extra_field": "this_should_be_ignored",
-                "priority": "high",
-                "title": "Task with extra field",
-                "user_name": "frank"
-              }
-            },
-            "then": {
-              "response_body_json": {
-                "success": true,
+                "status": "success",
                 "task": {
-                  "description": "Extra field should be ignored",
-                  "due_date": "2024-08-15",
-                  "id": "auto_generated_id",
-                  "priority": "high",
-                  "title": "Task with extra field",
-                  "user_name": "frank"
+                  "description": "Test extra fields",
+                  "due_date": "2024-07-10",
+                  "priority": "Medium",
+                  "title": "Extra fields",
+                  "user_name": "extra_user"
                 }
-              },
-              "status_code": 201
+              }
             },
-            "when": "TaskService.create_task is called with the above data"
+            "when": "TaskService.create_task is called with extra fields"
           },
           "type": "edge"
         },
         {
-          "description": "Verify that an error is returned if a field has the wrong data type (e.g., integer for title).",
-          "id": "tc_create_task_field_types",
+          "description": "Verify that very long string values are accepted for fields, since no content validation is required.",
+          "id": "TC_EDGE_03_boundary_long_strings",
           "implementation_id": "service_create_task",
-          "name": "test_create_task_with_wrong_field_types",
+          "name": "create_task_boundary_long_strings",
           "test_setup": {
             "given": {
               "request_body_json": {
-                "description": "Description as expected",
-                "due_date": "2024-08-16",
-                "priority": "high",
-                "title": 12345,
-                "user_name": "grace"
+                "description": "D.repeat(5000)",
+                "due_date": "2024-07-11",
+                "priority": "P.repeat(1000)",
+                "title": "T.repeat(10000)",
+                "user_name": "U.repeat(500)"
               }
             },
             "then": {
               "response_body_json": {
-                "error": "Invalid data type for field: title. Expected string.",
-                "success": false
-              },
-              "status_code": 400
+                "status": "success",
+                "task": {
+                  "description": "D.repeat(5000)",
+                  "due_date": "2024-07-11",
+                  "priority": "P.repeat(1000)",
+                  "title": "T.repeat(10000)",
+                  "user_name": "U.repeat(500)"
+                }
+              }
             },
-            "when": "TaskService.create_task is called with the above data"
+            "when": "TaskService.create_task is called with very long values"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that a request body not in JSON format results in an error specifying invalid JSON.",
+          "id": "TC_NEG_08_non_json_request_body",
+          "implementation_id": "service_create_task",
+          "name": "create_task_non_json_request_body",
+          "test_setup": {
+            "given": {
+              "request_body": "title=Foo&description=Bar&priority=High&due_date=2024-07-12&user_name=alice"
+            },
+            "then": {
+              "response_body_json": {
+                "error": "Request body must be valid JSON",
+                "status": "error"
+              }
+            },
+            "when": "TaskService.create_task is called with non-JSON request body"
           },
           "type": "negative"
         }
@@ -1259,182 +1138,181 @@
       "implementation_id": "repository_add_task",
       "test_cases": [
         {
-          "description": "Verify that a task is successfully added when all required fields are provided.",
-          "id": "add_task_valid_all_fields",
+          "description": "Verify that a task is successfully created when all required fields are provided.",
+          "id": "TC_ADD_TASK_001",
           "implementation_id": "repository_add_task",
-          "name": "Add Task with all required fields",
+          "name": "add_task_success_all_fields_present",
           "test_setup": {
             "given": {
               "request_body_json": {
-                "description": "Document all REST endpoints",
-                "due_date": "2024-07-01",
+                "description": "Buy milk and eggs",
+                "due_date": "2023-12-31",
                 "priority": "high",
-                "title": "Complete project documentation",
+                "title": "Buy groceries",
                 "user_name": "alice"
               }
             },
             "then": {
               "response_body_json": {
-                "description": "Document all REST endpoints",
-                "due_date": "2024-07-01",
-                "id": 1,
+                "description": "Buy milk and eggs",
+                "due_date": "2023-12-31",
+                "id": "auto-generated unique id",
                 "priority": "high",
-                "title": "Complete project documentation",
+                "title": "Buy groceries",
                 "user_name": "alice"
               },
               "status": "success"
             },
-            "when": "TaskRepository.add_task is called with the given input"
+            "when": "TaskRepository.add_task is called with complete task_data"
           },
           "type": "positive"
         },
         {
           "description": "Verify that an error is returned when the title field is missing.",
-          "id": "add_task_missing_title",
+          "id": "TC_ADD_TASK_002",
           "implementation_id": "repository_add_task",
-          "name": "Add Task missing title field",
+          "name": "add_task_missing_title",
           "test_setup": {
             "given": {
               "request_body_json": {
-                "description": "Document all REST endpoints",
-                "due_date": "2024-07-01",
+                "description": "Prepare slides",
+                "due_date": "2023-11-15",
+                "priority": "medium",
+                "user_name": "bob"
+              }
+            },
+            "then": {
+              "response_body_json": {
+                "error": "Missing required field: title"
+              },
+              "status": "error"
+            },
+            "when": "TaskRepository.add_task is called with missing title"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Verify error response when description field is missing.",
+          "id": "TC_ADD_TASK_003",
+          "implementation_id": "repository_add_task",
+          "name": "add_task_missing_description",
+          "test_setup": {
+            "given": {
+              "request_body_json": {
+                "due_date": "2023-10-20",
+                "priority": "low",
+                "title": "Team Meeting",
+                "user_name": "carol"
+              }
+            },
+            "then": {
+              "response_body_json": {
+                "error": "Missing required field: description"
+              },
+              "status": "error"
+            },
+            "when": "TaskRepository.add_task is called with missing description"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Verify error response when priority field is missing.",
+          "id": "TC_ADD_TASK_004",
+          "implementation_id": "repository_add_task",
+          "name": "add_task_missing_priority",
+          "test_setup": {
+            "given": {
+              "request_body_json": {
+                "description": "Backup server data",
+                "due_date": "2023-09-01",
+                "title": "Backup files",
+                "user_name": "dan"
+              }
+            },
+            "then": {
+              "response_body_json": {
+                "error": "Missing required field: priority"
+              },
+              "status": "error"
+            },
+            "when": "TaskRepository.add_task is called with missing priority"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Verify error response when due_date field is missing.",
+          "id": "TC_ADD_TASK_005",
+          "implementation_id": "repository_add_task",
+          "name": "add_task_missing_due_date",
+          "test_setup": {
+            "given": {
+              "request_body_json": {
+                "description": "Choose destination",
+                "priority": "medium",
+                "title": "Plan vacation",
+                "user_name": "erin"
+              }
+            },
+            "then": {
+              "response_body_json": {
+                "error": "Missing required field: due_date"
+              },
+              "status": "error"
+            },
+            "when": "TaskRepository.add_task is called with missing due_date"
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Verify error response when user_name field is missing.",
+          "id": "TC_ADD_TASK_006",
+          "implementation_id": "repository_add_task",
+          "name": "add_task_missing_user_name",
+          "test_setup": {
+            "given": {
+              "request_body_json": {
+                "description": "Discuss contract",
+                "due_date": "2023-08-18",
                 "priority": "high",
-                "user_name": "alice"
+                "title": "Call client"
               }
             },
             "then": {
               "response_body_json": {
-                "error": "Missing required field(s): title"
+                "error": "Missing required field: user_name"
               },
               "status": "error"
             },
-            "when": "TaskRepository.add_task is called with the given input"
+            "when": "TaskRepository.add_task is called with missing user_name"
           },
           "type": "negative"
         },
         {
-          "description": "Verify that an error is returned when the description field is missing.",
-          "id": "add_task_missing_description",
+          "description": "Verify error response when multiple required fields are missing.",
+          "id": "TC_ADD_TASK_007",
           "implementation_id": "repository_add_task",
-          "name": "Add Task missing description field",
+          "name": "add_task_multiple_missing_fields",
           "test_setup": {
             "given": {
               "request_body_json": {
-                "due_date": "2024-07-01",
-                "priority": "high",
-                "title": "Complete project documentation",
-                "user_name": "alice"
+                "description": "Read documentation"
               }
             },
             "then": {
               "response_body_json": {
-                "error": "Missing required field(s): description"
+                "error": "Missing required fields: title, priority, due_date, user_name"
               },
               "status": "error"
             },
-            "when": "TaskRepository.add_task is called with the given input"
+            "when": "TaskRepository.add_task is called with only description provided"
           },
           "type": "negative"
         },
         {
-          "description": "Verify that an error is returned when the priority field is missing.",
-          "id": "add_task_missing_priority",
+          "description": "Accepts fields with empty string values as valid (only presence is checked).",
+          "id": "TC_ADD_TASK_008",
           "implementation_id": "repository_add_task",
-          "name": "Add Task missing priority field",
-          "test_setup": {
-            "given": {
-              "request_body_json": {
-                "description": "Document all REST endpoints",
-                "due_date": "2024-07-01",
-                "title": "Complete project documentation",
-                "user_name": "alice"
-              }
-            },
-            "then": {
-              "response_body_json": {
-                "error": "Missing required field(s): priority"
-              },
-              "status": "error"
-            },
-            "when": "TaskRepository.add_task is called with the given input"
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Verify that an error is returned when the due_date field is missing.",
-          "id": "add_task_missing_due_date",
-          "implementation_id": "repository_add_task",
-          "name": "Add Task missing due_date field",
-          "test_setup": {
-            "given": {
-              "request_body_json": {
-                "description": "Document all REST endpoints",
-                "priority": "high",
-                "title": "Complete project documentation",
-                "user_name": "alice"
-              }
-            },
-            "then": {
-              "response_body_json": {
-                "error": "Missing required field(s): due_date"
-              },
-              "status": "error"
-            },
-            "when": "TaskRepository.add_task is called with the given input"
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Verify that an error is returned when the user_name field is missing.",
-          "id": "add_task_missing_user_name",
-          "implementation_id": "repository_add_task",
-          "name": "Add Task missing user_name field",
-          "test_setup": {
-            "given": {
-              "request_body_json": {
-                "description": "Document all REST endpoints",
-                "due_date": "2024-07-01",
-                "priority": "high",
-                "title": "Complete project documentation"
-              }
-            },
-            "then": {
-              "response_body_json": {
-                "error": "Missing required field(s): user_name"
-              },
-              "status": "error"
-            },
-            "when": "TaskRepository.add_task is called with the given input"
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Verify that an error is returned listing all missing required fields.",
-          "id": "add_task_multiple_missing_fields",
-          "implementation_id": "repository_add_task",
-          "name": "Add Task missing multiple required fields",
-          "test_setup": {
-            "given": {
-              "request_body_json": {
-                "priority": "high",
-                "title": "Complete project documentation"
-              }
-            },
-            "then": {
-              "response_body_json": {
-                "error": "Missing required field(s): description, due_date, user_name"
-              },
-              "status": "error"
-            },
-            "when": "TaskRepository.add_task is called with the given input"
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Verify that an error is returned when required fields have empty string values.",
-          "id": "add_task_empty_field_values",
-          "implementation_id": "repository_add_task",
-          "name": "Add Task with empty string values for required fields",
+          "name": "add_task_all_fields_empty_strings",
           "test_setup": {
             "given": {
               "request_body_json": {
@@ -1447,295 +1325,135 @@
             },
             "then": {
               "response_body_json": {
-                "error": "Required fields cannot be empty: title, description, priority, due_date, user_name"
-              },
-              "status": "error"
-            },
-            "when": "TaskRepository.add_task is called with the given input"
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Verify that task creation succeeds even when extra fields are present, and extra fields are ignored.",
-          "id": "add_task_extra_fields",
-          "implementation_id": "repository_add_task",
-          "name": "Add Task with extra non-required fields",
-          "test_setup": {
-            "given": {
-              "request_body_json": {
-                "another_irrelevant_field": 123,
-                "description": "Refactor API for better performance",
-                "due_date": "2024-07-15",
-                "extra_field": "should be ignored",
-                "priority": "medium",
-                "title": "Refactor API",
-                "user_name": "bob"
-              }
-            },
-            "then": {
-              "response_body_json": {
-                "description": "Refactor API for better performance",
-                "due_date": "2024-07-15",
-                "id": 2,
-                "priority": "medium",
-                "title": "Refactor API",
-                "user_name": "bob"
+                "description": "",
+                "due_date": "",
+                "id": "auto-generated unique id",
+                "priority": "",
+                "title": "",
+                "user_name": ""
               },
               "status": "success"
             },
-            "when": "TaskRepository.add_task is called with the given input"
-          },
-          "type": "positive"
-        },
-        {
-          "description": "Verify that task creation succeeds with boundary priority value 'low'.",
-          "id": "add_task_priority_boundary_low",
-          "implementation_id": "repository_add_task",
-          "name": "Add Task with boundary priority value 'low'",
-          "test_setup": {
-            "given": {
-              "request_body_json": {
-                "description": "Add API usage examples",
-                "due_date": "2024-08-01",
-                "priority": "low",
-                "title": "Update documentation",
-                "user_name": "charlie"
-              }
-            },
-            "then": {
-              "response_body_json": {
-                "description": "Add API usage examples",
-                "due_date": "2024-08-01",
-                "id": 3,
-                "priority": "low",
-                "title": "Update documentation",
-                "user_name": "charlie"
-              },
-              "status": "success"
-            },
-            "when": "TaskRepository.add_task is called with the given input"
+            "when": "TaskRepository.add_task is called with all fields present but empty values"
           },
           "type": "edge"
         },
         {
-          "description": "Verify that task creation succeeds with boundary priority value 'high'.",
-          "id": "add_task_priority_boundary_high",
+          "description": "Extra fields in the payload are accepted but ignored in the created Task object.",
+          "id": "TC_ADD_TASK_009",
           "implementation_id": "repository_add_task",
-          "name": "Add Task with boundary priority value 'high'",
+          "name": "add_task_extra_fields_ignored",
           "test_setup": {
             "given": {
               "request_body_json": {
-                "description": "Patch critical vulnerabilities",
-                "due_date": "2024-06-30",
+                "description": "Annual summary",
+                "due_date": "2023-07-01",
+                "extra_field": "extra_value",
                 "priority": "high",
-                "title": "Fix security bugs",
-                "user_name": "dave"
-              }
-            },
-            "then": {
-              "response_body_json": {
-                "description": "Patch critical vulnerabilities",
-                "due_date": "2024-06-30",
-                "id": 4,
-                "priority": "high",
-                "title": "Fix security bugs",
-                "user_name": "dave"
-              },
-              "status": "success"
-            },
-            "when": "TaskRepository.add_task is called with the given input"
-          },
-          "type": "edge"
-        },
-        {
-          "description": "Verify that an error is returned when priority value is not allowed.",
-          "id": "add_task_invalid_priority",
-          "implementation_id": "repository_add_task",
-          "name": "Add Task with invalid priority value",
-          "test_setup": {
-            "given": {
-              "request_body_json": {
-                "description": "Improve DB queries",
-                "due_date": "2024-07-20",
-                "priority": "urgent",
-                "title": "Optimize database",
-                "user_name": "eve"
-              }
-            },
-            "then": {
-              "response_body_json": {
-                "error": "Invalid priority value: urgent"
-              },
-              "status": "error"
-            },
-            "when": "TaskRepository.add_task is called with the given input"
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Verify that an error is returned when due_date is not in valid YYYY-MM-DD format.",
-          "id": "add_task_invalid_due_date_format",
-          "implementation_id": "repository_add_task",
-          "name": "Add Task with invalid due_date format",
-          "test_setup": {
-            "given": {
-              "request_body_json": {
-                "description": "Increase test coverage",
-                "due_date": "07-20-2024",
-                "priority": "medium",
-                "title": "Write tests",
+                "title": "Write report",
                 "user_name": "frank"
               }
             },
             "then": {
               "response_body_json": {
-                "error": "Invalid due_date format: 07-20-2024"
+                "description": "Annual summary",
+                "due_date": "2023-07-01",
+                "id": "auto-generated unique id",
+                "priority": "high",
+                "title": "Write report",
+                "user_name": "frank"
               },
-              "status": "error"
+              "status": "success"
             },
-            "when": "TaskRepository.add_task is called with the given input"
+            "when": "TaskRepository.add_task is called with extra fields"
           },
-          "type": "negative"
+          "type": "edge"
         },
         {
-          "description": "Verify that each added task receives a unique, incrementing ID.",
-          "id": "add_task_id_increment",
+          "description": "Accepts long string values for fields (no max length constraint).",
+          "id": "TC_ADD_TASK_010",
           "implementation_id": "repository_add_task",
-          "name": "Add multiple tasks and verify ID increments",
+          "name": "add_task_all_fields_long_strings",
           "test_setup": {
-            "given": [
-              {
-                "request_body_json": {
-                  "description": "First task",
-                  "due_date": "2024-07-10",
-                  "priority": "medium",
-                  "title": "Task 1",
-                  "user_name": "greg"
-                }
-              },
-              {
-                "request_body_json": {
-                  "description": "Second task",
-                  "due_date": "2024-07-11",
-                  "priority": "low",
-                  "title": "Task 2",
-                  "user_name": "greg"
-                }
+            "given": {
+              "request_body_json": {
+                "description": "D.repeat(4096)",
+                "due_date": "2024-12-31",
+                "priority": "P.repeat(256)",
+                "title": "T.repeat(1024)",
+                "user_name": "U.repeat(512)"
               }
-            ],
-            "then": [
-              {
-                "response_body_json": {
-                  "description": "First task",
-                  "due_date": "2024-07-10",
-                  "id": 5,
-                  "priority": "medium",
-                  "title": "Task 1",
-                  "user_name": "greg"
-                },
-                "status": "success"
+            },
+            "then": {
+              "response_body_json": {
+                "description": "D.repeat(4096)",
+                "due_date": "2024-12-31",
+                "id": "auto-generated unique id",
+                "priority": "P.repeat(256)",
+                "title": "T.repeat(1024)",
+                "user_name": "U.repeat(512)"
               },
-              {
-                "response_body_json": {
-                  "description": "Second task",
-                  "due_date": "2024-07-11",
-                  "id": 6,
+              "status": "success"
+            },
+            "when": "TaskRepository.add_task is called with long string field values"
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Verify that the id field is automatically incremented for each new task.",
+          "id": "TC_ADD_TASK_011",
+          "implementation_id": "repository_add_task",
+          "name": "add_task_id_autoincrement",
+          "test_setup": {
+            "given": {
+              "initial_tasks": [
+                {
+                  "description": "Desc 1",
+                  "due_date": "2023-05-01",
                   "priority": "low",
-                  "title": "Task 2",
-                  "user_name": "greg"
-                },
-                "status": "success"
+                  "title": "Task 1",
+                  "user_name": "user1"
+                }
+              ],
+              "request_body_json": {
+                "description": "Desc 2",
+                "due_date": "2023-05-02",
+                "priority": "medium",
+                "title": "Task 2",
+                "user_name": "user2"
               }
-            ],
-            "when": [
-              "TaskRepository.add_task is called with first input",
-              "TaskRepository.add_task is called with second input"
-            ]
+            },
+            "then": {
+              "response_body_json": {
+                "description": "Desc 2",
+                "due_date": "2023-05-02",
+                "id": "previous_id + 1",
+                "priority": "medium",
+                "title": "Task 2",
+                "user_name": "user2"
+              },
+              "status": "success"
+            },
+            "when": "TaskRepository.add_task is called after at least one task exists"
           },
           "type": "positive"
         },
         {
-          "description": "Verify that task creation succeeds with a very long title.",
-          "id": "add_task_long_title",
+          "description": "Verify error response when the payload is completely empty.",
+          "id": "TC_ADD_TASK_012",
           "implementation_id": "repository_add_task",
-          "name": "Add Task with very long title",
+          "name": "add_task_empty_payload",
           "test_setup": {
             "given": {
-              "request_body_json": {
-                "description": "Edge test for title length",
-                "due_date": "2024-09-01",
-                "priority": "medium",
-                "title": "T.repeat(255)",
-                "user_name": "hannah"
-              }
+              "request_body_json": {}
             },
             "then": {
               "response_body_json": {
-                "description": "Edge test for title length",
-                "due_date": "2024-09-01",
-                "id": 7,
-                "priority": "medium",
-                "title": "T.repeat(255)",
-                "user_name": "hannah"
-              },
-              "status": "success"
-            },
-            "when": "TaskRepository.add_task is called with the given input"
-          },
-          "type": "edge"
-        },
-        {
-          "description": "Verify that task creation succeeds when fields contain special characters.",
-          "id": "add_task_special_characters",
-          "implementation_id": "repository_add_task",
-          "name": "Add Task with special characters in fields",
-          "test_setup": {
-            "given": {
-              "request_body_json": {
-                "description": "Description with emojis \ud83d\ude0a\ud83d\ude80",
-                "due_date": "2024-10-01",
-                "priority": "medium",
-                "title": "!@#$%^&*()_+",
-                "user_name": "ivan"
-              }
-            },
-            "then": {
-              "response_body_json": {
-                "description": "Description with emojis \ud83d\ude0a\ud83d\ude80",
-                "due_date": "2024-10-01",
-                "id": 8,
-                "priority": "medium",
-                "title": "!@#$%^&*()_+",
-                "user_name": "ivan"
-              },
-              "status": "success"
-            },
-            "when": "TaskRepository.add_task is called with the given input"
-          },
-          "type": "edge"
-        },
-        {
-          "description": "Verify that an error is returned when required fields are null.",
-          "id": "add_task_null_fields",
-          "implementation_id": "repository_add_task",
-          "name": "Add Task with null values for fields",
-          "test_setup": {
-            "given": {
-              "request_body_json": {
-                "description": null,
-                "due_date": null,
-                "priority": null,
-                "title": null,
-                "user_name": null
-              }
-            },
-            "then": {
-              "response_body_json": {
-                "error": "Required fields cannot be null: title, description, priority, due_date, user_name"
+                "error": "Missing required fields: title, description, priority, due_date, user_name"
               },
               "status": "error"
             },
-            "when": "TaskRepository.add_task is called with the given input"
+            "when": "TaskRepository.add_task is called with empty payload"
           },
           "type": "negative"
         }
@@ -2277,15 +1995,15 @@
       "implementation_id": "endpoint_add_task",
       "test_cases": [
         {
-          "description": "Verify that a task can be successfully created when all required fields are provided with valid values.",
-          "id": "tc_create_task_valid_input",
+          "description": "Test successful creation of a new task with all required fields present.",
+          "id": "create_task_positive_all_fields",
           "implementation_id": "endpoint_add_task",
-          "name": "Create Task With Valid Input",
+          "name": "Create Task With All Required Fields",
           "request_body_json": {
-            "description": "Buy milk, eggs, and bread",
-            "due_date": "2024-06-30",
-            "priority": "high",
-            "title": "Buy groceries",
+            "description": "This is a test task.",
+            "due_date": "2024-12-31",
+            "priority": "High",
+            "title": "Test Task",
             "user_name": "alice"
           },
           "request_headers": {
@@ -2294,191 +2012,29 @@
           "request_method": "POST",
           "request_url": "/tasks",
           "response_body_json": {
-            "description": "Buy milk, eggs, and bread",
-            "due_date": "2024-06-30",
-            "id": "autogenerated",
-            "priority": "high",
-            "title": "Buy groceries",
+            "description": "This is a test task.",
+            "due_date": "2024-12-31",
+            "priority": "High",
+            "title": "Test Task",
             "user_name": "alice"
           },
           "response_status_code": 201,
           "test_setup": {
-            "given": "No pre-existing task with the same details.",
-            "then": "Task is created and returned in the response with status 201.",
-            "when": "A valid POST request is sent to /tasks with all required fields."
+            "given": "The system is running and no tasks exist.",
+            "then": "The API returns 201 Created and the created task in the response.",
+            "when": "A valid POST /tasks request is made with all required fields."
           },
           "type": "positive"
         },
         {
-          "description": "Verify that the API returns an error when the title field is missing from the request.",
-          "id": "tc_create_task_missing_title",
+          "description": "Test creation fails if the 'title' field is missing from the request payload.",
+          "id": "create_task_negative_missing_title",
           "implementation_id": "endpoint_add_task",
           "name": "Create Task Missing Title",
           "request_body_json": {
-            "description": "Buy milk, eggs, and bread",
-            "due_date": "2024-06-30",
-            "priority": "high",
-            "user_name": "alice"
-          },
-          "request_headers": {
-            "Content-Type": "application/json"
-          },
-          "request_method": "POST",
-          "request_url": "/tasks",
-          "response_body_json": {
-            "error": "Missing required field: title"
-          },
-          "response_status_code": 400,
-          "test_setup": {
-            "given": "No pre-existing task with the same details.",
-            "then": "An error response with status 400 indicating the missing title field is returned.",
-            "when": "A POST request is sent to /tasks without the title field."
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Verify that the API returns an error when the description field is missing.",
-          "id": "tc_create_task_missing_description",
-          "implementation_id": "endpoint_add_task",
-          "name": "Create Task Missing Description",
-          "request_body_json": {
-            "due_date": "2024-06-30",
-            "priority": "high",
-            "title": "Buy groceries",
-            "user_name": "alice"
-          },
-          "request_headers": {
-            "Content-Type": "application/json"
-          },
-          "request_method": "POST",
-          "request_url": "/tasks",
-          "response_body_json": {
-            "error": "Missing required field: description"
-          },
-          "response_status_code": 400,
-          "test_setup": {
-            "given": "No pre-existing task with the same details.",
-            "then": "An error response with status 400 indicating the missing description field is returned.",
-            "when": "A POST request is sent to /tasks without the description field."
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Verify that the API returns an error when the priority field is missing.",
-          "id": "tc_create_task_missing_priority",
-          "implementation_id": "endpoint_add_task",
-          "name": "Create Task Missing Priority",
-          "request_body_json": {
-            "description": "Buy milk, eggs, and bread",
-            "due_date": "2024-06-30",
-            "title": "Buy groceries",
-            "user_name": "alice"
-          },
-          "request_headers": {
-            "Content-Type": "application/json"
-          },
-          "request_method": "POST",
-          "request_url": "/tasks",
-          "response_body_json": {
-            "error": "Missing required field: priority"
-          },
-          "response_status_code": 400,
-          "test_setup": {
-            "given": "No pre-existing task with the same details.",
-            "then": "An error response with status 400 indicating the missing priority field is returned.",
-            "when": "A POST request is sent to /tasks without the priority field."
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Verify that the API returns an error when the due_date field is missing.",
-          "id": "tc_create_task_missing_due_date",
-          "implementation_id": "endpoint_add_task",
-          "name": "Create Task Missing Due Date",
-          "request_body_json": {
-            "description": "Buy milk, eggs, and bread",
-            "priority": "high",
-            "title": "Buy groceries",
-            "user_name": "alice"
-          },
-          "request_headers": {
-            "Content-Type": "application/json"
-          },
-          "request_method": "POST",
-          "request_url": "/tasks",
-          "response_body_json": {
-            "error": "Missing required field: due_date"
-          },
-          "response_status_code": 400,
-          "test_setup": {
-            "given": "No pre-existing task with the same details.",
-            "then": "An error response with status 400 indicating the missing due_date field is returned.",
-            "when": "A POST request is sent to /tasks without the due_date field."
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Verify that the API returns an error when the user_name field is missing.",
-          "id": "tc_create_task_missing_user_name",
-          "implementation_id": "endpoint_add_task",
-          "name": "Create Task Missing User Name",
-          "request_body_json": {
-            "description": "Buy milk, eggs, and bread",
-            "due_date": "2024-06-30",
-            "priority": "high",
-            "title": "Buy groceries"
-          },
-          "request_headers": {
-            "Content-Type": "application/json"
-          },
-          "request_method": "POST",
-          "request_url": "/tasks",
-          "response_body_json": {
-            "error": "Missing required field: user_name"
-          },
-          "response_status_code": 400,
-          "test_setup": {
-            "given": "No pre-existing task with the same details.",
-            "then": "An error response with status 400 indicating the missing user_name field is returned.",
-            "when": "A POST request is sent to /tasks without the user_name field."
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Verify that the API returns an error indicating all missing required fields when more than one field is missing.",
-          "id": "tc_create_task_multiple_fields_missing",
-          "implementation_id": "endpoint_add_task",
-          "name": "Create Task Multiple Fields Missing",
-          "request_body_json": {
-            "description": "No title, no due date.",
-            "priority": "low"
-          },
-          "request_headers": {
-            "Content-Type": "application/json"
-          },
-          "request_method": "POST",
-          "request_url": "/tasks",
-          "response_body_json": {
-            "error": "Missing required fields: title, due_date, user_name"
-          },
-          "response_status_code": 400,
-          "test_setup": {
-            "given": "No pre-existing task with the same details.",
-            "then": "An error response with status 400 listing all missing fields is returned.",
-            "when": "A POST request is sent to /tasks with multiple required fields missing."
-          },
-          "type": "negative"
-        },
-        {
-          "description": "Verify that the API returns an error when the title field is present but empty.",
-          "id": "tc_create_task_empty_title",
-          "implementation_id": "endpoint_add_task",
-          "name": "Create Task With Empty Title",
-          "request_body_json": {
-            "description": "Empty title test",
-            "due_date": "2024-07-10",
-            "priority": "medium",
-            "title": "",
+            "description": "Missing title field.",
+            "due_date": "2024-11-15",
+            "priority": "Low",
             "user_name": "bob"
           },
           "request_headers": {
@@ -2487,27 +2043,23 @@
           "request_method": "POST",
           "request_url": "/tasks",
           "response_body_json": {
-            "error": "Field 'title' cannot be empty"
+            "error": "Missing required field(s): title"
           },
           "response_status_code": 400,
           "test_setup": {
-            "given": "No pre-existing task with the same details.",
-            "then": "An error response with status 400 indicating the title cannot be empty is returned.",
-            "when": "A POST request is sent to /tasks with an empty title."
+            "given": "The system is running.",
+            "then": "The API returns 400 Bad Request with an error message listing 'title' as missing.",
+            "when": "A POST /tasks request is made without the 'title' field."
           },
-          "type": "edge"
+          "type": "negative"
         },
         {
-          "description": "Verify that the API returns an error when due_date is not in a valid date format.",
-          "id": "tc_create_task_invalid_due_date_format",
+          "description": "Test creation fails if more than one required field is missing from the payload.",
+          "id": "create_task_negative_missing_multiple_fields",
           "implementation_id": "endpoint_add_task",
-          "name": "Create Task With Invalid due_date Format",
+          "name": "Create Task Missing Multiple Fields",
           "request_body_json": {
-            "description": "Invalid due_date format",
-            "due_date": "30-06-2024",
-            "priority": "low",
-            "title": "Test due date format",
-            "user_name": "charlie"
+            "description": "Missing multiple fields."
           },
           "request_headers": {
             "Content-Type": "application/json"
@@ -2515,122 +2067,75 @@
           "request_method": "POST",
           "request_url": "/tasks",
           "response_body_json": {
-            "error": "Invalid format for field: due_date"
+            "error": "Missing required field(s): title, priority, due_date, user_name"
           },
           "response_status_code": 400,
           "test_setup": {
-            "given": "No pre-existing task with the same details.",
-            "then": "An error response with status 400 indicating invalid due_date format is returned.",
-            "when": "A POST request is sent to /tasks with an invalid due_date format."
+            "given": "The system is running.",
+            "then": "The API returns 400 Bad Request naming all missing fields in the response.",
+            "when": "A POST /tasks request is made with only 'description' provided."
           },
-          "type": "edge"
+          "type": "negative"
         },
         {
-          "description": "Verify that the API returns an error when priority is not within the accepted values.",
-          "id": "tc_create_task_invalid_priority_value",
+          "description": "Test creation fails if the request body is completely empty.",
+          "id": "create_task_negative_empty_body",
           "implementation_id": "endpoint_add_task",
-          "name": "Create Task With Invalid Priority Value",
-          "request_body_json": {
-            "description": "Priority is not high/medium/low",
-            "due_date": "2024-07-15",
-            "priority": "urgent",
-            "title": "Test invalid priority",
-            "user_name": "david"
-          },
+          "name": "Create Task With Empty Body",
+          "request_body_json": {},
           "request_headers": {
             "Content-Type": "application/json"
           },
           "request_method": "POST",
           "request_url": "/tasks",
           "response_body_json": {
-            "error": "Invalid value for field: priority"
+            "error": "Missing required field(s): title, description, priority, due_date, user_name"
           },
           "response_status_code": 400,
           "test_setup": {
-            "given": "No pre-existing task with the same details.",
-            "then": "An error response with status 400 indicating invalid priority value is returned.",
-            "when": "A POST request is sent to /tasks with an invalid priority value."
+            "given": "The system is running.",
+            "then": "The API returns 400 Bad Request listing all required fields as missing.",
+            "when": "A POST /tasks request is made with an empty JSON body."
           },
-          "type": "edge"
+          "type": "negative"
         },
         {
-          "description": "Verify that the API ignores or returns error for extra fields that are not part of the TaskCreate schema.",
-          "id": "tc_create_task_extra_field",
+          "description": "Test creation fails if the Content-Type header is missing.",
+          "id": "create_task_negative_missing_content_type",
           "implementation_id": "endpoint_add_task",
-          "name": "Create Task With Extra Field",
+          "name": "Create Task Without Content-Type Header",
           "request_body_json": {
-            "description": "Should ignore extra field",
-            "due_date": "2024-08-01",
-            "extra_field": "should be ignored",
-            "priority": "medium",
-            "title": "Test extra field",
-            "user_name": "eve"
+            "description": "No Content-Type header.",
+            "due_date": "2024-11-30",
+            "priority": "Medium",
+            "title": "Task Header Test",
+            "user_name": "carol"
           },
-          "request_headers": {
-            "Content-Type": "application/json"
-          },
+          "request_headers": {},
           "request_method": "POST",
           "request_url": "/tasks",
           "response_body_json": {
-            "description": "Should ignore extra field",
-            "due_date": "2024-08-01",
-            "id": "autogenerated",
-            "priority": "medium",
-            "title": "Test extra field",
-            "user_name": "eve"
+            "error": "Content-Type must be application/json"
           },
-          "response_status_code": 201,
+          "response_status_code": 400,
           "test_setup": {
-            "given": "No pre-existing task with the same details.",
-            "then": "Task is created with status 201 and the extra field is ignored in the response.",
-            "when": "A POST request is sent to /tasks with an extra field in the payload."
+            "given": "The system is running.",
+            "then": "The API returns 400 Bad Request with an appropriate error message.",
+            "when": "A POST /tasks request is made without Content-Type header."
           },
-          "type": "edge"
+          "type": "negative"
         },
         {
-          "description": "Verify that the API can handle a very long title (e.g., 255 characters) if allowed by the schema.",
-          "id": "tc_create_task_long_title",
+          "description": "Test creation fails if the Content-Type header is not 'application/json'.",
+          "id": "create_task_negative_incorrect_content_type",
           "implementation_id": "endpoint_add_task",
-          "name": "Create Task With Very Long Title",
+          "name": "Create Task With Incorrect Content-Type",
           "request_body_json": {
-            "description": "Test with a long title",
-            "due_date": "2024-08-10",
-            "priority": "medium",
-            "title": "T.repeat(255)",
-            "user_name": "frank"
-          },
-          "request_headers": {
-            "Content-Type": "application/json"
-          },
-          "request_method": "POST",
-          "request_url": "/tasks",
-          "response_body_json": {
-            "description": "Test with a long title",
-            "due_date": "2024-08-10",
-            "id": "autogenerated",
-            "priority": "medium",
-            "title": "T.repeat(255)",
-            "user_name": "frank"
-          },
-          "response_status_code": 201,
-          "test_setup": {
-            "given": "No pre-existing task with the same details.",
-            "then": "Task is created and returned in the response with status 201.",
-            "when": "A POST request is sent to /tasks with a 255 character title."
-          },
-          "type": "edge"
-        },
-        {
-          "description": "Verify that the API returns an error if the Content-Type header is not application/json.",
-          "id": "tc_create_task_invalid_content_type",
-          "implementation_id": "endpoint_add_task",
-          "name": "Create Task With Invalid Content-Type Header",
-          "request_body_json": {
-            "description": "Wrong Content-Type",
-            "due_date": "2024-07-20",
-            "priority": "high",
-            "title": "Test invalid header",
-            "user_name": "george"
+            "description": "Content-Type is not JSON.",
+            "due_date": "2024-10-10",
+            "priority": "Low",
+            "title": "Wrong Content Type",
+            "user_name": "dave"
           },
           "request_headers": {
             "Content-Type": "text/plain"
@@ -2642,23 +2147,23 @@
           },
           "response_status_code": 400,
           "test_setup": {
-            "given": "No pre-existing task with the same details.",
-            "then": "An error response with status 400 indicating the Content-Type must be application/json is returned.",
-            "when": "A POST request is sent to /tasks with a non-JSON Content-Type header."
+            "given": "The system is running.",
+            "then": "The API returns 400 Bad Request with an appropriate error message.",
+            "when": "A POST /tasks request is made with Content-Type set to text/plain."
           },
           "type": "negative"
         },
         {
-          "description": "Verify that the API allows or rejects creating duplicate tasks based on system policy (assume duplicates are allowed).",
-          "id": "tc_create_task_duplicate_task",
+          "description": "Test creation succeeds even if all required fields are present but are empty strings, as no content validation is required.",
+          "id": "create_task_edge_empty_strings",
           "implementation_id": "endpoint_add_task",
-          "name": "Create Duplicate Task",
+          "name": "Create Task With Empty String Fields",
           "request_body_json": {
-            "description": "Buy milk, eggs, and bread",
-            "due_date": "2024-06-30",
-            "priority": "high",
-            "title": "Buy groceries",
-            "user_name": "alice"
+            "description": "",
+            "due_date": "",
+            "priority": "",
+            "title": "",
+            "user_name": ""
           },
           "request_headers": {
             "Content-Type": "application/json"
@@ -2666,18 +2171,103 @@
           "request_method": "POST",
           "request_url": "/tasks",
           "response_body_json": {
-            "description": "Buy milk, eggs, and bread",
-            "due_date": "2024-06-30",
-            "id": "autogenerated",
-            "priority": "high",
-            "title": "Buy groceries",
-            "user_name": "alice"
+            "description": "",
+            "due_date": "",
+            "priority": "",
+            "title": "",
+            "user_name": ""
           },
           "response_status_code": 201,
           "test_setup": {
-            "given": "A task with identical details already exists.",
-            "then": "A new task is created and returned with status 201 (if duplicates are allowed).",
-            "when": "A POST request is sent to /tasks with the same details as an existing task."
+            "given": "The system is running.",
+            "then": "The API returns 201 Created and echoes back the empty fields.",
+            "when": "A POST /tasks request is made with all required fields present as empty strings."
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Test creation with maximum reasonable string lengths for all fields, ensuring the API accepts long data.",
+          "id": "create_task_edge_long_strings",
+          "implementation_id": "endpoint_add_task",
+          "name": "Create Task With Maximum Length Strings",
+          "request_body_json": {
+            "description": "D.repeat(1024)",
+            "due_date": "2024-12-31T23:59:59.999Z",
+            "priority": "P.repeat(100)",
+            "title": "T.repeat(255)",
+            "user_name": "U.repeat(255)"
+          },
+          "request_headers": {
+            "Content-Type": "application/json"
+          },
+          "request_method": "POST",
+          "request_url": "/tasks",
+          "response_body_json": {
+            "description": "D.repeat(1024)",
+            "due_date": "2024-12-31T23:59:59.999Z",
+            "priority": "P.repeat(100)",
+            "title": "T.repeat(255)",
+            "user_name": "U.repeat(255)"
+          },
+          "response_status_code": 201,
+          "test_setup": {
+            "given": "The system is running.",
+            "then": "The API returns 201 Created and the created task reflects all long values.",
+            "when": "A POST /tasks request is made with very long string values for all fields."
+          },
+          "type": "edge"
+        },
+        {
+          "description": "Test creation fails if the request body is not valid JSON.",
+          "id": "create_task_negative_not_json",
+          "implementation_id": "endpoint_add_task",
+          "name": "Create Task With Non-JSON Body",
+          "request_body_json": "This is not JSON",
+          "request_headers": {
+            "Content-Type": "application/json"
+          },
+          "request_method": "POST",
+          "request_url": "/tasks",
+          "response_body_json": {
+            "error": "Request body must be valid JSON"
+          },
+          "response_status_code": 400,
+          "test_setup": {
+            "given": "The system is running.",
+            "then": "The API returns 400 Bad Request with an error about the body format.",
+            "when": "A POST /tasks request is made with an invalid JSON body."
+          },
+          "type": "negative"
+        },
+        {
+          "description": "Test creation succeeds even if field values are numbers or booleans, as no type validation is required beyond presence.",
+          "id": "create_task_negative_wrong_data_types",
+          "implementation_id": "endpoint_add_task",
+          "name": "Create Task With Wrong Data Types",
+          "request_body_json": {
+            "description": true,
+            "due_date": 20240601,
+            "priority": false,
+            "title": 123,
+            "user_name": null
+          },
+          "request_headers": {
+            "Content-Type": "application/json"
+          },
+          "request_method": "POST",
+          "request_url": "/tasks",
+          "response_body_json": {
+            "description": true,
+            "due_date": 20240601,
+            "priority": false,
+            "title": 123,
+            "user_name": null
+          },
+          "response_status_code": 201,
+          "test_setup": {
+            "given": "The system is running.",
+            "then": "The API returns 201 Created and the created task reflects the provided values.",
+            "when": "A POST /tasks request is made with incorrect data types but all fields present."
           },
           "type": "edge"
         }
